@@ -17,5 +17,5 @@
     "udon",
     "vrchat"
   ],
-  "hideInInspector": false
+  "hideInEditor": false
 }

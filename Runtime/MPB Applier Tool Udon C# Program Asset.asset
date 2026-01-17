@@ -61,7 +61,7 @@ MonoBehaviour:
       Data: 3|System.RuntimeType, mscorlib
     - Name: 
       Entry: 1
-      Data: valenvrc.Tools.MPB.MPBMesh[], Assembly-CSharp
+      Data: valenvrc.Tools.MPB.MPBMesh[], com.valenvrc.VMPBUE
     - Name: 
       Entry: 8
       Data: 

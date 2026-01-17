@@ -1,0 +1,57 @@
+{
+    "renderers": [
+        {
+            "renderer": {
+                "instanceID": -678312
+            },
+            "materials": [
+                {
+                    "material": {
+                        "instanceID": 37334
+                    },
+                    "properties": [
+                        {
+                            "name": "_MatCapColor",
+                            "type": 0,
+                            "floatValue": 0.0,
+                            "colorValue": {
+                                "r": 0.0,
+                                "g": 1.0,
+                                "b": 0.3691716194152832,
+                                "a": 1.0
+                            },
+                            "vectorValue": {
+                                "x": 0.0,
+                                "y": 0.0,
+                                "z": 0.0,
+                                "w": 0.0
+                            },
+                            "textureValue": {
+                                "instanceID": 0
+                            }
+                        }
+                    ],
+                    "foldout": true
+                }
+            ],
+            "foldout": true,
+            "hasPendingChanges": false
+        },
+        {
+            "renderer": {
+                "instanceID": -679170
+            },
+            "materials": [
+                {
+                    "material": {
+                        "instanceID": 1664
+                    },
+                    "properties": [],
+                    "foldout": true
+                }
+            ],
+            "foldout": true,
+            "hasPendingChanges": false
+        }
+    ]
+}
