@@ -7,7 +7,7 @@ using UdonSharpEditor;
 
 namespace valenvrc.Tools.MPB
 {
-
+    [InitializeOnLoad]
     public class MPBEditor : EditorWindow
     {
         [System.Serializable]
@@ -61,6 +61,83 @@ namespace valenvrc.Tools.MPB
         private Vector2 rightScrollPosition;
         private int selectedRendererIndex = -1;
         
+        // Static constructor for InitializeOnLoad
+        static MPBEditor()
+        {
+            EditorApplication.playModeStateChanged += OnPlayModeStateChangedStatic;
+        }
+        
+        private static void OnPlayModeStateChangedStatic(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredEditMode)
+            {
+                // Reapply all property blocks after exiting play mode
+                ApplyToAllStatic();
+            }
+        }
+        
+        private static void ApplyToAllStatic()
+        {
+            if (!File.Exists(CONFIG_PATH))
+                return;
+            
+            string json = File.ReadAllText(CONFIG_PATH);
+            MPBConfig config = JsonUtility.FromJson<MPBConfig>(json);
+            
+            if (config == null || config.renderers == null)
+                return;
+            
+            int appliedCount = 0;
+            
+            foreach (RendererConfig rendererConfig in config.renderers)
+            {
+                if (rendererConfig.renderer == null) continue;
+                
+                MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+                Material[] materials = rendererConfig.renderer.sharedMaterials;
+                
+                for (int matIndex = 0; matIndex < materials.Length; matIndex++)
+                {
+                    Material mat = materials[matIndex];
+                    if (mat == null) continue;
+                    
+                    MaterialConfig matConfig = rendererConfig.materials.FirstOrDefault(m => m.material == mat);
+                    if (matConfig == null || matConfig.properties.Count == 0) continue;
+                    
+                    rendererConfig.renderer.GetPropertyBlock(mpb, matIndex);
+                    
+                    foreach (ShaderProperty prop in matConfig.properties)
+                    {
+                        switch (prop.type)
+                        {
+                            case ShaderUtil.ShaderPropertyType.Float:
+                            case ShaderUtil.ShaderPropertyType.Range:
+                                mpb.SetFloat(prop.name, prop.floatValue);
+                                break;
+                            case ShaderUtil.ShaderPropertyType.Color:
+                                mpb.SetColor(prop.name, prop.colorValue);
+                                break;
+                            case ShaderUtil.ShaderPropertyType.Vector:
+                                mpb.SetVector(prop.name, prop.vectorValue);
+                                break;
+                            case ShaderUtil.ShaderPropertyType.TexEnv:
+                                mpb.SetTexture(prop.name, prop.textureValue);
+                                break;
+                        }
+                    }
+                    
+                    rendererConfig.renderer.SetPropertyBlock(mpb, matIndex);
+                }
+                
+                appliedCount++;
+            }
+            
+            if (appliedCount > 0)
+            {
+                Debug.Log($"[MPB Editor] Reapplied properties to {appliedCount} renderers after exiting play mode");
+            }
+        }
+        
         [MenuItem("ValenVRC/Tools/MPB Editor")]
         public static void ShowWindow()
         {
@@ -75,6 +152,15 @@ namespace valenvrc.Tools.MPB
         private void OnDisable()
         {
             SaveConfig();
+        }
+        
+        private void OnPlayModeStateChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredEditMode)
+            {
+                // Reapply all property blocks after exiting play mode
+                ApplyToAll();
+            }
         }
         
         private void OnGUI()
