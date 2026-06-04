@@ -1,21 +1,18 @@
-# Val's Material Property Block Udon Editor (VMPBUE) tool.
-This tool is desgined to help you asign and apply material property blocks on your vrchat scene.
+# Udon Material Property Block Applier for VRChat
 
-### Installation
+This tool is designed to help you assign and apply material property blocks to renderers on your VRChat scene.
+
+## Installation
 
 You can download the latest version of the tool from the [releases page](https://github.com/elmoha943/VMPBUE/releases) or get it directly on your VCC/Alcom from my [package listing](https://valenvrc.com).
 
-### Usage
+## Usage
 
-1. Drag and drop mesh renderers into the editor script to access and modify the different properties of their materials.
-2. Hit Apply (or Apply to All) button to preview the result.
-3. Hit Export to Udon button to create a new UdonBehaviour on your scene that will automatically asign the material property blocks upon loading the scene.
+1. Add an **MPB Component** to any GameObject with a Renderer (MeshRenderer, SkinnedMeshRenderer, etc.).
+2. The component will automatically scan the renderer's materials and list all available properties (colors, floats, textures).
+3. You can edit these properties directly in the inspector, and they will be applied to the renderer using a Material Property Block at runtime.
 
-<img width="404" height="229" alt="image" src="https://github.com/user-attachments/assets/716ae5f3-d1ad-4b56-b84e-d05c5d9a7119" />
-
-<img width="873" height="592" alt="image" src="https://github.com/user-attachments/assets/a01d384a-3a4d-4588-b78e-82e1fc39b6fc" />
-
-### Why use material property blocks instead of different materials?
+## Why use material property blocks instead of different materials?
 
 Material Property Blocks (MPBs) let you override material properties per renderer without touching the shared material asset. Compared to changing material properties directly or creating multiple materials, they provide clear advantages:
 
